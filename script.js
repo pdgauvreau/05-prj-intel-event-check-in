@@ -164,9 +164,11 @@ function createConfetti() {
   }
 }
 
-// Handle form submission
-document.getElementById("checkInForm").addEventListener("submit", function (e) {
+// Handle form submission - FIXED VERSION
+function handleCheckIn(e) {
+  // Prevent form from submitting and refreshing page
   e.preventDefault();
+  e.stopPropagation();
 
   const nameInput = document.getElementById("attendeeName");
   const teamSelect = document.getElementById("teamSelect");
@@ -205,7 +207,18 @@ document.getElementById("checkInForm").addEventListener("submit", function (e) {
       greeting.classList.remove("show");
     }, 4000);
   }
-});
 
-// Load saved data when page loads
-window.addEventListener("DOMContentLoaded", loadFromStorage);
+  return false;
+}
+
+// Initialize when page loads
+window.addEventListener("DOMContentLoaded", function () {
+  // Load saved data
+  loadFromStorage();
+
+  // Attach form handler
+  const form = document.getElementById("checkInForm");
+  if (form) {
+    form.addEventListener("submit", handleCheckIn);
+  }
+});
